@@ -44,6 +44,10 @@ const ingresoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    fechaRegistro: {
+        type: String,
+        maxlenght: 255
+    }
 });
 
 function validateIngreso(ingreso) {
@@ -68,7 +72,8 @@ function validateIngreso(ingreso) {
         }).items(Joi.object().length(4).messages({
             "object.base": "Ingrese al menos un producto",
             "object.length": "Ingrese al menos un producto",
-        }))
+        })),
+        fechaRegistro: Joi.string().max(255),
 
     });
     return schema.validate(ingreso);

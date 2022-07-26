@@ -4,6 +4,8 @@ const { Client, validateClient } = MClient;
 export default {
 
     add: async (req, res, next) => {
+        const { error } = validateClient(req.body);
+        if (error) return res.status(400).json({ message: error.details[0].message });
 
         try {
             const client = new Client(req.body);

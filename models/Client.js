@@ -23,6 +23,10 @@ const clientSchema = mongoose.Schema({
         maxlenght: 255,
         unique: true
     },
+    cuit: {
+        type: String,
+        maxlenght: 255
+    },
     state: {
         type: Number,
         default: 1
@@ -30,6 +34,10 @@ const clientSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: new Date().toLocaleDateString()
+    },
+    fechaRegistro: {
+        type: String,
+        maxlenght: 255
     }
 });
 
@@ -40,18 +48,15 @@ function validateClient(client) {
             "string.min": "El nombre no es válido",
             "string.max": "El nombre no es válido"
         }),
-        direccion: Joi.object({ calle: Joi.string().max(255), nro: Joi.number() }).allow('', null).messages({
+        direccion: Joi.object({ calle: Joi.string().allow('').max(255), nro: Joi.number().allow('') }).allow('', null).messages({
             "object.length": "Ingrese una direccion con calle y número",
         }),
-        phones: Joi.array().unique().items(Joi.number()).messages({
-            "array.min": "Ingrese al menos un teléfono",
-            "array.unique": "Hay telefonos repetidos",
-            "array.base": "Ingrese un numero válido"
-
-        }),
-        email: Joi.string().email().messages({
+        phones: Joi.array(),
+        email: Joi.string().email().allow('').messages({
             "string.email": "Correo electrónico inválido"
         }),
+        cuit: Joi.string().max(255).allow(''),
+        fechaRegistro: Joi.string().max(255),
     })
     return schema.validate(client);
 

@@ -17,7 +17,13 @@ async function decStock(artId, cant) {
     await article.save();
 }
 
-
+async function checkStock(cantidad, id) {
+    const article = await Article.findById(id);
+    if (cantidad > article.stock) {
+        return article.name;
+    }
+    else return ''
+}
 
 export default {
     add: async (req, res, next) => {
@@ -27,13 +33,21 @@ export default {
 
         try {
             const venta = new Venta(req.body);
-            await venta.save(venta);
+            let articulo = null
 
+            for (let i = 0; i < venta.detalles.length; i++) {
+                articulo = await checkStock(venta.detalles[i].cantidad, venta.detalles[i]._id);
+                if (articulo) {
+                    return res.status(400).json({ message: 'No hay stock sufuciente para el producto: ' + articulo });
+                }
+            }
             venta.detalles.map((x) => {
                 decStock(x._id, x.cantidad)
             });
 
+            await venta.save(venta);
             res.status(200).json(venta);
+
         } catch (e) {
             if (e.name === 'MongoError' && e.code === 11000) {
                 next(new Error('Comprobande duplicado'));
@@ -92,14 +106,7 @@ export default {
             next(e)
         }
     },
-    // remove: async (req, res, next) => {
-    //     try {
-    //         const category = await Category.findByIdAndDelete(req.query.id);
-    //         res.status(200).json(category);
-    //     } catch (e) {
-    //         next(e)
-    //     }
-    // },
+
     act: async (req, res, next) => {
         try {
 
