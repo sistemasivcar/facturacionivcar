@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Joi, { allow } from 'joi';
+import Joi from 'joi';
 
 const clientSchema = mongoose.Schema({
     name: {
@@ -17,10 +17,6 @@ const clientSchema = mongoose.Schema({
     phones: {
         type: [Number],
         maxlenght: 255
-    },
-    email: {
-        type: String,
-        maxlenght: 255,
     },
     cuit: {
         type: String,
@@ -51,9 +47,6 @@ function validateClient(client) {
             "object.length": "Ingrese una direccion con calle y número",
         }),
         phones: Joi.array(),
-        email: Joi.string().email().allow('').messages({
-            "string.email": "Correo electrónico inválido"
-        }),
         cuit: Joi.string().max(255).allow(''),
         fechaRegistro: Joi.string().max(255),
     })
