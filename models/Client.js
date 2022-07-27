@@ -47,6 +47,7 @@ function validateClient(client) {
             "object.length": "Ingrese una direccion con calle y número",
         }),
         phones: Joi.array(),
+
         cuit: Joi.string().max(255).allow(''),
         fechaRegistro: Joi.string().max(255),
     })
