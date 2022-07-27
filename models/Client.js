@@ -21,7 +21,6 @@ const clientSchema = mongoose.Schema({
     email: {
         type: String,
         maxlenght: 255,
-        unique: true
     },
     cuit: {
         type: String,
