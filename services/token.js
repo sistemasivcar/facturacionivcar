@@ -1,6 +1,5 @@
 import jsonwebtoken from 'jsonwebtoken';
 import models from '../models';
-console.log(models.User)
 
 async function checkToken(token) {
     let __id = null;
@@ -8,8 +7,6 @@ async function checkToken(token) {
         const { _id } = await jsonwebtoken.decode(token);
         __id = _id;
     } catch (e) {
-        console.log("otro error\n", e)
-        console.log(_id)
         // invalid token
         return false;
     }
